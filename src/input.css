@@ -1,0 +1,112 @@
+@import "tailwindcss";
+
+@theme base {
+    /*Colors*/
+
+    /*Neutral*/
+    --color-neutral-900: hsl(227, 75%, 14%);
+    --color-neutral-800: hsl(226, 25%, 17%);
+    --color-neutral-700: hsl(225, 23%, 24%);
+    --color-neutral-600: hsl(226, 11%, 37%);
+    --color-neutral-300: hsl(0, 0%, 78%);
+    --color-neutral-200: hsl(217, 61%, 90%);
+    --color-neutral-100: hsl(0, 0%, 93%);
+    --color-neutral-50: hsl(200, 60%, 99%);
+
+    /*Red*/
+    --color-red-400: hsl(3, 86%, 64%);
+    --color-red-500: hsl(3, 71%, 56%);
+    --color-red-700: hsl(3, 77%, 44%);
+
+    /*Gradient*/
+    --color-light-gradient: linear-gradient(180deg, #EBF2FC 0%, #EEF8F9 100%);
+    --color-dark-gradient: linear-gradient(180deg, #040918 0%, #091540 100%);
+
+    /*Font size*/
+    --text-normal-0: 0.8rem;
+    --text-normal-1: 1rem;
+    --text-normal-2: 1.2rem;
+    --text-normal-3: 1.5rem;
+    --text-normal-4: 2rem;
+
+    /*Font family*/
+    --font-Noto: "Noto Sans", sans-serif;
+
+    /*Font weight*/
+    --font-weight-regular: 500;
+    --font-weight-light: 400;
+    --font-weight-bold: 700;
+
+    /*space, padding, margin, gap*/
+    --spacing-small: 0.5rem;
+    --spacing-normal: 1rem;
+    --spacing-large: 1.5rem;
+    --spacing-larger: 4rem;
+
+    --spacing-outer: 1.5rem;
+}
+
+@layer base {
+
+    body {
+        min-height: 100vh;
+        display: grid;
+        justify-content: center;
+        background-color: var(--color-neutral-200);
+        font-family: var(--font-Noto);
+        font-size: var(--text-normal-1);
+    }
+    article {
+        min-width: 280px;
+        background-color: var(--color-neutral-50);
+        padding: var(--spacing-normal);
+        border-radius: 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+
+        & > div:first-child {
+            display: flex;
+            gap: 1rem;
+
+            div {
+                display: flex;
+                flex-direction: column;
+                gap: 0.25rem;
+
+                h2 {font-size: var(--text-normal-2);font-weight: var(--font-weight-bold);}
+                p {font-size: var(--text-normal-0);} } }
+
+        & > div:nth-child(2) {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;}
+
+        button {
+            padding: 0.15rem 0.5rem;
+            border: 1px solid var(--color-neutral-300);
+            border-radius: 18px;}
+
+        button + span {
+            display: inline-flex;
+            align-items: center;
+            padding-inline: 0.2rem;
+            width: 50px; height: 25px;
+            border-radius: 18px;
+            background-color: var(--color-red-700);
+
+            & > span {
+                display: inline-block;
+                width: 20px; height: 20px;
+                background-color: var(--color-neutral-50);
+                border-radius: 100%;
+                transition: transform 500ms ease-out;
+
+                &:active {
+                    transform: translateX(25px);
+                }
+            }
+        }
+    }
+}
