@@ -9,24 +9,22 @@
       "Courier New", monospace;
     --color-red-700: hsl(3, 77%, 44%);
     --color-neutral-50: hsl(200, 60%, 99%);
-    --color-neutral-200: hsl(217, 61%, 90%);
     --color-neutral-300: hsl(0, 0%, 78%);
+    --color-neutral-900: hsl(227, 75%, 14%);
     --spacing: 0.25rem;
     --container-5xl: 64rem;
-    --font-weight-normal: 400;
     --font-weight-bold: 700;
     --radius-lg: 0.5rem;
     --radius-2xl: 1rem;
-    --radius-3xl: 1.5rem;
-    --default-transition-duration: 150ms;
-    --default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     --default-font-family: var(--font-sans);
     --default-mono-font-family: var(--font-mono);
+    --color-gradient: linear-gradient(180deg, #EBF2FC 0%, #EEF8F9 100%);
     --text-normal-0: 0.8rem;
     --text-normal-1: 1rem;
     --text-normal-2: 1.2rem;
     --text-normal-4: 2rem;
-    --font-Noto: "Noto Sans", sans-serif;
+    --font-Noto: "Noto Sans";
+    --font-weight-regular: 500;
     --spacing-small: 0.5rem;
     --spacing-normal: 1rem;
     --spacing-large: 1.5rem;
@@ -222,9 +220,6 @@
   .rounded-2xl {
     border-radius: var(--radius-2xl);
   }
-  .rounded-3xl {
-    border-radius: var(--radius-3xl);
-  }
   .rounded-lg {
     border-radius: var(--radius-lg);
   }
@@ -243,32 +238,12 @@
   .p-small {
     padding: var(--spacing-small);
   }
-  .px-6 {
-    padding-inline: calc(var(--spacing) * 6);
-  }
-  .py-3 {
-    padding-block: calc(var(--spacing) * 3);
-  }
   .text-normal-4 {
     font-size: var(--text-normal-4);
   }
   .font-bold {
     --tw-font-weight: var(--font-weight-bold);
     font-weight: var(--font-weight-bold);
-  }
-  .font-normal {
-    --tw-font-weight: var(--font-weight-normal);
-    font-weight: var(--font-weight-normal);
-  }
-  .active\:bg-red-700 {
-    &:active {
-      background-color: var(--color-red-700);
-    }
-  }
-  .active\:text-neutral-50 {
-    &:active {
-      color: var(--color-neutral-50);
-    }
   }
   .max-sm\:flex-col {
     @media (width < 40rem) {
@@ -286,14 +261,54 @@
     }
   }
 }
+.darkmode {
+  --color-neutral-50: hsl(226, 25%, 17%);
+  --color-neutral-200: hsl(225, 23%, 24%);
+  --color-neutral-300: hsl(226, 11%, 37%);
+  --color-neutral-600: hsl(0, 0%, 78%);
+  --color-neutral-700: hsl(217, 61%, 90%);
+  --color-neutral-800: hsl(0, 0%, 93%);
+  --color-neutral-900: hsl(200, 60%, 99%);
+  --color-red-700: hsl(3, 86%, 64%);
+  --color-gradient: linear-gradient(180deg, #040918 0%, #091540 100%);
+}
 @layer base {
+  *:not(button, input, label) {
+    transition-property: background-color, background, color;
+    transition-duration: 1000ms;
+    transition-timing-function: ease;
+  }
   body {
     min-height: 100vh;
     display: grid;
     justify-content: center;
-    background-color: var(--color-neutral-200);
-    font-family: var(--font-Noto);
+    color: var(--color-neutral-900);
+    background: var(--color-gradient);
+    font-family: var(--font-Noto), sans-serif;
     font-size: var(--text-normal-1);
+  }
+  .logo-text {
+    fill: var(--color-neutral-900);
+  }
+  nav {
+    label {
+      font-weight: var(--font-weight-regular);
+      padding: 0.5rem 1.5rem;
+      border-radius: 18px;
+      background-color: var(--color-neutral-50);
+      transition: all 400ms ease-out;
+      &:hover {
+        opacity: 0.75;
+        cursor: pointer;
+      }
+    }
+    label:has(input:checked) {
+      background-color: var(--color-red-700);
+      color: var(--color-neutral-50);
+    }
+    input {
+      appearance: none;
+    }
   }
   article {
     min-width: 280px;
@@ -303,7 +318,7 @@
     display: flex;
     flex-direction: column;
     gap: 2rem;
-    & > div:first-child {
+    & > div:nth-child(1) {
       display: flex;
       gap: 1rem;
       div {
@@ -326,30 +341,55 @@
       justify-content: space-between;
     }
     button {
-      padding: 0.15rem 0.5rem;
+      padding: 0.2rem 0.75rem;
       border: 1px solid var(--color-neutral-300);
       border-radius: 18px;
+      font-weight: var(--font-weight-regular);
+      &:is(:hover, :active) {
+        background-color: var(--color-red-700);
+        color: var(--color-neutral-50);
+        cursor: pointer;
+      }
     }
-    button + span {
+    button + label {
       display: inline-flex;
       align-items: center;
       padding-inline: 0.2rem;
       width: 50px;
       height: 25px;
       border-radius: 18px;
-      background-color: var(--color-red-700);
-      & > span {
+      background-color: var(--color-neutral-300);
+      &:hover {
+        cursor: pointer;
+      }
+      & > input {
+        appearance: none;
         display: inline-block;
         width: 20px;
         height: 20px;
         background-color: var(--color-neutral-50);
         border-radius: 100%;
-        transition: transform 500ms ease-out;
-        &:active {
+        transition: all 400ms ease-out;
+        &:checked {
           transform: translateX(25px);
+          label:has(&) {
+            background-color: var(--color-red-700);
+          }
         }
       }
     }
+  }
+  #moon {
+    display: block;
+  }
+  #sun {
+    display: none;
+  }
+  .darkmode #moon {
+    display: none;
+  }
+  .darkmode #sun {
+    display: block;
   }
 }
 @property --tw-font-weight {
