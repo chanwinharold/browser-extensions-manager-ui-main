@@ -16,6 +16,8 @@
     --font-weight-bold: 700;
     --radius-lg: 0.5rem;
     --radius-2xl: 1rem;
+    --default-transition-duration: 150ms;
+    --default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     --default-font-family: var(--font-sans);
     --default-mono-font-family: var(--font-mono);
     --color-gradient: linear-gradient(180deg, #EBF2FC 0%, #EEF8F9 100%);
@@ -199,6 +201,9 @@
   .max-w-5xl {
     max-width: var(--container-5xl);
   }
+  .flex-wrap {
+    flex-wrap: wrap;
+  }
   .place-items-center {
     place-items: center;
   }
@@ -240,6 +245,10 @@
   }
   .text-normal-4 {
     font-size: var(--text-normal-4);
+  }
+  .leading-10 {
+    --tw-leading: calc(var(--spacing) * 10);
+    line-height: calc(var(--spacing) * 10);
   }
   .font-bold {
     --tw-font-weight: var(--font-weight-bold);
@@ -312,12 +321,14 @@
   }
   article {
     min-width: 280px;
+    max-width: 320px;
     background-color: var(--color-neutral-50);
     padding: var(--spacing-normal);
     border-radius: 18px;
     display: flex;
     flex-direction: column;
     gap: 2rem;
+    animation: appear 800ms ease-out;
     & > div:nth-child(1) {
       display: flex;
       gap: 1rem;
@@ -392,6 +403,20 @@
     display: block;
   }
 }
+@keyframes appear {
+  from {
+    opacity: 0;
+    scale: 0;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+@property --tw-leading {
+  syntax: "*";
+  inherits: false;
+}
 @property --tw-font-weight {
   syntax: "*";
   inherits: false;
@@ -399,6 +424,7 @@
 @layer properties {
   @supports ((-webkit-hyphens: none) and (not (margin-trim: inline))) or ((-moz-orient: inline) and (not (color:rgb(from red r g b)))) {
     *, ::before, ::after, ::backdrop {
+      --tw-leading: initial;
       --tw-font-weight: initial;
     }
   }

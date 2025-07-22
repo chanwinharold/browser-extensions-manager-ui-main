@@ -2,29 +2,16 @@ fetch('../data/data.json').then(response => response.json())
     .then(data => {
 
         const gridSection = document.getElementById("grid-section")
-        const radioChoice = document.querySelectorAll("input[name='choice']")
-
-        if (radioChoice[0].checked) refreshList(data, gridSection)
-
-        radioChoice[0].onclick = () => {
-            refreshList(data, gridSection)
-        }
-        radioChoice[1].onclick = () => {
-            const result = data.filter(object => object.active)
-            refreshList(result, gridSection)
-        }
-        radioChoice[2].onclick = () => {
-            const result = data.filter(object => !object.active)
-            refreshList(result, gridSection)
-        }
-
+        refreshList(data, gridSection)
+        showAllOrActiveOrInactive(data, gridSection)
 
     }).catch(error => console.log("Données non récupérées : ", error))
 
-const refreshList = (data, container) => {
+const refreshList = (Element, container) => {
     container.innerHTML = ""
-    data.forEach((eachElement) => {
+    Element.forEach((eachElement) => {
         const article = document.createElement('article')
+        article.id = eachElement.id
         article.innerHTML = (`
                 <div>
                     <span>
@@ -42,6 +29,21 @@ const refreshList = (data, container) => {
             `)
         container.appendChild(article)
     })
+}
+
+const showAllOrActiveOrInactive = (Element, container) => {
+    const radioChoice = document.querySelectorAll("input[name='choice']")
+        radioChoice[0].onclick = () => {
+            refreshList(Element, container)
+        }
+        radioChoice[1].onclick = () => {
+            const result = Element.filter(object => object.active)
+            refreshList(result, container)
+        }
+        radioChoice[2].onclick = () => {
+            const result = Element.filter(object => !object.active)
+            refreshList(result, container)
+        }
 }
 
 const checkboxElement = (isActive) => {
