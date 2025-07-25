@@ -1,52 +1,86 @@
-fetch('../data/data.json').then(response => response.json())
+fetch("../data/data.json")
+    .then(response => response.json())
     .then(data => {
+        const gridContainer = document.getElementById("grid-section")
+        const radioInputs = document.querySelectorAll("input[name='choice']")
 
-        const gridSection = document.getElementById("grid-section")
-        refreshList(data, gridSection)
-        showAllOrActiveOrInactive(data, gridSection)
+        refreshList(data, gridContainer)
 
-    }).catch(error => console.log("Données non récupérées : ", error))
+        showStates(radioInputs, data, gridContainer)
 
-const refreshList = (Element, container) => {
+    }).catch(() => alert("Erreur de chargement des données"))
+
+
+function refreshList(data, container) {
     container.innerHTML = ""
-    Element.forEach((eachElement) => {
-        const article = document.createElement('article')
-        article.id = eachElement.id
+
+    const radios = document.querySelectorAll("input[name='choice']")
+    for (let i = 0; i < radios.length; i++) {
+        if (radios[i].checked) {
+            switch (radios[i].value) {
+                case "true" : data = data.filter(object => object.active); break
+                case "false" : data = data.filter(object => !object.active); break
+            }
+        }
+    }
+
+    for (let i = 0; i < data.length; i++) {
+        const article = document.createElement("article")
         article.innerHTML = (`
                 <div>
                     <span>
-                        <img src=${eachElement.icon} alt=${eachElement.title}>
+                        <img src=${data[i].icon} alt=${data[i].title}>
                     </span>
                     <div>
-                        <h2>${eachElement.title}</h2>
-                        <p>${eachElement.text}</p>
+                        <h2>${data[i].title}</h2>
+                        <p>${data[i].text}</p>
                     </div>
                 </div>
                 <div>
                     <button>Remove</button>
-                    ${checkboxElement(eachElement.active)}
+                    <label><input id='${data[i].title}' type="checkbox" ${ data[i].active ? "checked" : "" }></label>
                 </div>
             `)
         container.appendChild(article)
-    })
+    }
+    setStates(data)
+    removeExtension(data)
 }
 
-const showAllOrActiveOrInactive = (Element, container) => {
-    const radioChoice = document.querySelectorAll("input[name='choice']")
-        radioChoice[0].onclick = () => {
-            refreshList(Element, container)
+function showStates(radios, data, container) {
+    let dataFiltered
+    for (let i = 0; i < radios.length; i++) {
+        radios[i].onclick = (e) => {
+            switch (e.target.value) {
+                case "all" : dataFiltered = data; break
+                case "true" : dataFiltered = data.filter(object => object.active); break
+                case "false" : dataFiltered = data.filter(object => !object.active); break
+            }
+            refreshList(dataFiltered, container)
         }
-        radioChoice[1].onclick = () => {
-            const result = Element.filter(object => object.active)
-            refreshList(result, container)
-        }
-        radioChoice[2].onclick = () => {
-            const result = Element.filter(object => !object.active)
-            refreshList(result, container)
-        }
+    }
 }
 
-const checkboxElement = (isActive) => {
-    if (isActive) return `<label><input type="checkbox" checked></label>`
-    else return `<label><input type="checkbox"></label>`
+function setStates(data) {
+    const gridContainer = document.getElementById("grid-section")
+    const checkboxInputs = document.querySelectorAll("#grid-section article input[type='checkbox']")
+    for (let i = 0; i < checkboxInputs.length; i++) {
+        checkboxInputs[i].onclick = () => {
+            data[i].active = checkboxInputs[i].checked
+
+            refreshList(data, gridContainer)
+        }
+    }
+}
+
+function removeExtension(data) {
+    const gridContainer = document.getElementById("grid-section")
+    const btnRemoves = document.querySelectorAll("#grid-section article button")
+    for (let i = 0; i < btnRemoves.length; i++) {
+        btnRemoves[i].onclick = () => {
+            data.splice(i, 1)
+
+            refreshList(data, gridContainer)
+        }
+    }
 }
